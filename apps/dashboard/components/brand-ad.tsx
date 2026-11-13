@@ -1,14 +1,29 @@
 type BrandAdProps = {
   headline?: string;
   support?: string;
+  videoSrc?: string;
 };
 
 export function BrandAd({
   headline = "Operations for clinics that grow with calm care.",
   support = "Enquiries, customers, and bookings stay on your tenant — rooted like a Thai canopy, clear as lagoon water.",
+  videoSrc = "/brand/thailand-eco.mp4",
 }: BrandAdProps) {
   return (
     <aside className="brand-ad" aria-label="About Lala">
+      <div className="brand-ad-media" aria-hidden="true">
+        <video
+          className="brand-ad-video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+        >
+          <source src={videoSrc} type="video/mp4" />
+        </video>
+        <div className="brand-ad-scrim" />
+      </div>
       <div className="brand-ad-sky" aria-hidden="true" />
       <div className="brand-ad-canopy" aria-hidden="true" />
       <div className="brand-ad-lagoon" aria-hidden="true" />
