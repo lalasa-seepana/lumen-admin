@@ -6,11 +6,11 @@ type BrandAdProps = {
 
 export function BrandAd({
   headline = "Operations for clinics that grow with calm care.",
-  support = "Enquiries, customers, and bookings stay on your tenant — rooted like a Thai canopy, clear as lagoon water.",
+  support = "Enquiries, patients, and appointments stay private to your clinic.",
   videoSrc = "/brand/thailand-eco.mp4",
 }: BrandAdProps) {
   return (
-    <aside className="brand-ad" aria-label="About Lala">
+    <aside className="brand-ad" aria-label="About Clinic Dial">
       <div className="brand-ad-media" aria-hidden="true">
         <video
           className="brand-ad-video"
@@ -28,7 +28,7 @@ export function BrandAd({
       <div className="brand-ad-canopy" aria-hidden="true" />
       <div className="brand-ad-lagoon" aria-hidden="true" />
       <div className="brand-ad-copy">
-        <p className="brand-ad-mark">Lala</p>
+        <p className="brand-ad-mark">Clinic Dial</p>
         <p className="brand-ad-headline">{headline}</p>
         <p className="brand-ad-support">{support}</p>
         <ul className="brand-ad-points">

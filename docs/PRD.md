@@ -1,18 +1,18 @@
-# Lala — Product Requirements Document (POC)
+# Clinic Dial — Product Requirements Document (POC)
 
 ## 1. Product summary
 
-**Lala** is a multi-clinic AI receptionist and clinic operations platform. Independent clinic owners create an account, connect their existing website, receive consultations and appointment requests, manage customers/services/bookings, and monitor an AI receptionist.
+**Clinic Dial** is a multi-clinic AI receptionist and clinic operations platform. Independent clinic owners create an account, connect their existing website, receive consultations and appointment requests, manage customers/services/bookings, and monitor an AI receptionist.
 
-- **Lala** (`./lala/`): the product — greenfield SaaS.
+- **Clinic Dial** (`./lala/`): the product — greenfield SaaS.
 - **Lumen** (`./lumen-website/`): an independent example clinic website used as the first integration client. Not the product.
 - **Gnani**: speech and LLM vendor for Milestone C (Speech APIs for STT/TTS, and the Evon v3.3 open-weight LLM). Not a product name. Sources: [console](https://app.gnani.ai/), [docs](https://docs.gnani.ai/), [quick start](https://docs.gnani.ai/api/introduction/quick-start), [Evon model card](https://huggingface.co/gnani/gnani-evon-v3.3-30B-A3B).
 
-Lala must not depend on Lumen or any particular clinic. Both apps stay independently runnable and deployable.
+Clinic Dial must not depend on Lumen or any particular clinic. Both apps stay independently runnable and deployable.
 
 ## 2. Problem statement
 
-Small clinics get enquiries from their own websites but lack a shared, multi-tenant operations layer for customers, appointments, and AI receptionist handoff. Building per-clinic tooling duplicates work and leaks data across clinics when isolation is weak. Lala provides one operations dashboard with per-clinic isolation and a secure website integration API.
+Small clinics get enquiries from their own websites but lack a shared, multi-tenant operations layer for customers, appointments, and AI receptionist handoff. Building per-clinic tooling duplicates work and leaks data across clinics when isolation is weak. Clinic Dial provides one operations dashboard with per-clinic isolation and a secure website integration API.
 
 ## 3. Target users
 
@@ -35,9 +35,9 @@ Small clinics get enquiries from their own websites but lack a shared, multi-ten
 
 ## 5. POC success criteria
 
-1. Visitor submits a Lumen consultation; Lumen stores it; Lumen server forwards to Lala.
-2. Lala authenticates the integration key, resolves the clinic, upserts customer, stores enquiry.
-3. Clinic owner sees the enquiry in the Lala dashboard from live data.
+1. Visitor submits a Lumen consultation; Lumen stores it; Lumen server forwards to Clinic Dial.
+2. Clinic Dial authenticates the integration key, resolves the clinic, upserts customer, stores enquiry.
+3. Clinic owner sees the enquiry in the Clinic Dial dashboard from live data.
 4. Owner creates an appointment against real availability; conflicts are rejected.
 5. A second test clinic cannot see the first clinic’s data.
 6. Milestones A+B work without voice. Voice (C) is optional for the website→dashboard demo.
@@ -69,8 +69,8 @@ Small clinics get enquiries from their own websites but lack a shared, multi-ten
 
 ### 6.5 AI Receptionist (POC Milestone C)
 
-- Browser voice → Lala FastAPI WebSocket; Gnani STT/TTS via `gnani-vachana`; reasoning via self-hosted Evon v3.3.
-- Acts only through Lala backend tool APIs with a clinic-scoped, least-privilege service identity; every model tool call is validated before side effects.
+- Browser voice → Clinic Dial FastAPI WebSocket; Gnani STT/TTS via `gnani-vachana`; reasoning via self-hosted Evon v3.3.
+- Acts only through Clinic Dial backend tool APIs with a clinic-scoped, least-privilege service identity; every model tool call is validated before side effects.
 - May list services, check availability, create/reschedule appointments with verification, escalate to staff. No cross-clinic reads; no deletes.
 - Must never diagnose or recommend medical treatment; disclose that it is AI; escalate when unsure.
 - Recording/transcript only with explicit consent.
@@ -82,13 +82,13 @@ Small clinics get enquiries from their own websites but lack a shared, multi-ten
 
 ## 7. End-to-end user journeys
 
-### 7.1 Website enquiry → Lala CRM (Milestone A)
+### 7.1 Website enquiry → Clinic Dial CRM (Milestone A)
 
 1. Visitor opens Lumen → selects category + treatment → enters details + consent.
-2. Browser POSTs to Lumen `/api/consultations` (not to Lala).
-3. Lumen saves enquiry in its own Supabase, then server-forwards to Lala.
-4. Lala authenticates key → resolves clinic → dedupes customer by email → stores enquiry.
-5. Owner logs into Lala dashboard → sees enquiry / customer.
+2. Browser POSTs to Lumen `/api/consultations` (not to Clinic Dial).
+3. Lumen saves enquiry in its own Supabase, then server-forwards to Clinic Dial.
+4. Clinic Dial authenticates key → resolves clinic → dedupes customer by email → stores enquiry.
+5. Owner logs into Clinic Dial dashboard → sees enquiry / customer.
 
 ### 7.2 Appointment management (Milestone B)
 
@@ -98,11 +98,11 @@ Small clinics get enquiries from their own websites but lack a shared, multi-ten
 
 ### 7.3 AI receptionist (Milestone C)
 
-1. Customer uses browser voice client; mic audio streams to Lala FastAPI over WebSocket (browser never holds Gnani or LLM secrets).
+1. Customer uses browser voice client; mic audio streams to Clinic Dial FastAPI over WebSocket (browser never holds Gnani or LLM secrets).
 2. Backend turn: Gnani STT (realtime) → Evon v3.3 (OpenAI-compatible chat + tools) → backend validates every tool call → Gnani TTS (SSE or realtime) → audio to browser.
 3. Tools (clinic-scoped, least privilege): list services, check availability, create/reschedule appointment (with verification), escalate to staff. No cross-clinic reads; no deletes.
 4. System rules: answer in caller language/script; disclose AI; never diagnose or recommend treatment; escalate when unsure.
-5. Session/transcript/(consented) recording stored in Lala, tied to clinic + customer.
+5. Session/transcript/(consented) recording stored in Clinic Dial, tied to clinic + customer.
 
 ### 7.4 Multi-clinic isolation demo (Milestone D)
 
@@ -114,29 +114,29 @@ Small clinics get enquiries from their own websites but lack a shared, multi-ten
 
 | ID | Requirement | Milestone | Status |
 |---|---|---|---|
-| F1 | Clinic signup/login (Supabase Auth) | A | Partial (dashboard auth UI + FastAPI JWT verify; needs Lala Supabase project) |
-| F2 | Per-clinic tenant isolation (RLS + backend) | A | Partial (migration RLS + API membership checks tested in-memory) |
-| F3 | Website integration API key (hashed at rest) | A | Not started |
-| F4 | Ingest consultation + customer dedupe | A | Not started |
-| F5 | Dashboard: overview, enquiries, customers, integrations, activity | A | Not started |
-| F6 | Lumen server-side forward + `forward_status` | A | Not started (Lumen change planned) |
-| F7 | Services + availability management | B | Not started |
-| F8 | Appointments + conflict prevention | B | Not started |
-| F9 | Minimal clinic settings (timezone default `Asia/Kolkata`) | B | Not started |
-| F10 | Browser voice client + Gnani STT/TTS via `gnani-vachana` SDK | C | Blocked (needs Gnani API key from https://app.gnani.ai/) |
+| F1 | Clinic signup/login (Supabase Auth) | A | Done (dashboard + JWT verify; durable clinic rows need Clinic Dial Supabase migrations applied) |
+| F2 | Per-clinic tenant isolation (RLS + backend) | A | Done (RLS migrations + API membership checks / isolation tests) |
+| F3 | Website integration API key (hashed at rest) | A | Done |
+| F4 | Ingest consultation + customer dedupe | A | Done |
+| F5 | Dashboard: overview, enquiries, customers, integrations, activity | A | Done |
+| F6 | Lumen server-side forward + `forward_status` | A | Done (Lumen forward module) |
+| F7 | Services + availability management | B | Done (`/v1/services`, `/v1/availability`, dashboard) |
+| F8 | Appointments + conflict prevention | B | Done (`/v1/appointments`, conflict tests) |
+| F9 | Minimal clinic settings (timezone default `Asia/Kolkata`) | B | Done (clinic timezone on create + appointment display) |
+| F10 | Browser voice client + Gnani STT/TTS via `gnani-vachana` SDK | C | Partial (mock path done; live needs Gnani key) |
 | F10b | Evon v3.3 self-hosted LLM (vLLM/SGLang) as receptionist brain | C | Blocked (needs HF access + GPU host — owner decision) |
-| F11 | Receptionist CRM tools + escalation (backend-validated) | C | Not started |
-| F12 | Conversations, transcripts, handover inbox | C | Not started |
-| F13 | Minimal analytics from real counts | D | Not started |
+| F11 | Receptionist CRM tools + escalation (backend-validated) | C | Done (mock tools + escalate) |
+| F12 | Conversations, transcripts, handover inbox | C | Done (Epic 7) |
+| F13 | Minimal analytics from real counts | D | Done (`GET /v1/analytics`, dashboard Analytics module) |
 
-### Deduplication (Lala schema)
+### Deduplication (Clinic Dial schema)
 
 - Customer unique per clinic by normalised email (trim + lower-case).
 - On email match: fill missing fields (e.g. phone); do not overwrite existing values without an activity history entry.
 - Phone normalised to E.164 is a secondary signal only — flag possible duplicates; never auto-merge.
 - Every enquiry is its own row linked to the customer.
 
-### Failure and retry (Lumen → Lala)
+### Failure and retry (Lumen → Clinic Dial)
 
 Fits existing Lumen code (local save in `saveEnquiry`, then respond):
 
@@ -152,7 +152,7 @@ Fits existing Lumen code (local save in `saveEnquiry`, then respond):
 | Area | Requirement |
 |---|---|
 | Performance | Integration ingest p95 < 2s excluding Lumen local save |
-| Availability | Lumen remains usable if Lala is down (`pending` forward) |
+| Availability | Lumen remains usable if Clinic Dial is down (`pending` forward) |
 | Security | No secrets in browser / `NEXT_PUBLIC_*`; hashed integration keys |
 | Privacy | Consent value + timestamp + text/version; DPDP-aware retention |
 | Time | Store appointment/availability UTC; display in clinic timezone |
@@ -166,18 +166,18 @@ Fits existing Lumen code (local save in `saveEnquiry`, then respond):
 ```text
 lala/
   apps/
-    dashboard/          # Next.js operations dashboard (Epic 1 login/onboarding)
-    voice-client/       # Next.js browser voice UI (Milestone C — not created yet)
+    dashboard/          # Next.js owner workspace
+    voice-client/       # Visitor receptionist (browser)
   backend/              # FastAPI
     app/
-      api/              # routes: me, clinics (+ later integrations, crm, bookings, voice)
+      api/              # me, clinics, integrations, crm, bookings, voice
       core/             # settings, security
       models/           # Pydantic schemas
-      services/         # domain logic + in-memory clinic store (DB wiring next)
+      services/         # domain + clinic store (in-memory or Postgres)
       tests/
   supabase/
     migrations/         # additive SQL + RLS
-  docs/                 # planning set
+  docs/                 # PRD, STATUS, DEMO_RUNBOOK, DECISIONS, …
 ```
 
 ### Mermaid — runtime (POC)
@@ -187,17 +187,17 @@ flowchart LR
   Visitor --> LumenUI[Lumen Next.js UI]
   LumenUI --> LumenAPI[Lumen API routes]
   LumenAPI --> LumenDB[(Lumen Supabase Postgres)]
-  LumenAPI -->|"Bearer integration key"| LalaAPI[Lala FastAPI]
-  Owner --> Dash[Lala Dashboard Next.js]
+  LumenAPI -->|"Bearer integration key"| LalaAPI[Clinic Dial FastAPI]
+  Owner --> Dash[Clinic Dial Dashboard Next.js]
   Dash --> LalaAPI
-  LalaAPI --> LalaDB[(Lala Supabase Postgres)]
+  LalaAPI --> LalaDB[(Clinic Dial Supabase Postgres)]
   LalaAPI --> Auth[Supabase Auth JWT]
-  VoiceUI[Lala Voice Client] -->|"WebSocket mic audio"| LalaAPI
+  VoiceUI[Clinic Dial Voice Client] -->|"WebSocket mic audio"| LalaAPI
   LalaAPI -->|"STT/TTS X-API-Key-ID"| Gnani[Gnani Speech api.vachana.ai]
   LalaAPI -->|"OpenAI-compatible chat+tools"| Evon[Evon v3.3 via vLLM or SGLang]
 ```
 
-Lumen and Lala use **separate** Supabase projects. Lala never points at Lumen’s `SUPABASE_DB_URL`.
+Lumen and Clinic Dial use **separate** Supabase projects. Clinic Dial never points at Lumen’s `SUPABASE_DB_URL`.
 
 ### Milestone C — Gnani Speech + Evon (verified against public docs)
 
@@ -213,14 +213,14 @@ Lumen and Lala use **separate** Supabase projects. Lala never points at Lumen’
 | Hosted Evon chat API | **Not listed** in Speech API docs (`llms.txt` / Speech section). Plan Evon as **self-hosted** only. | [docs index](https://docs.gnani.ai/llms.txt) |
 | Evon model | Open-weight MoE ~30B total / ~3.5B active; BF16; 128K context; EN/HI/TE (+ other Indic); OpenAI-compatible messages + tool calls; serve with vLLM ≥0.12 or SGLang; hardware H100 80GB / H200 / A100 on Linux — **not a laptop** | [HF model page](https://huggingface.co/gnani/gnani-evon-v3.3-30B-A3B) |
 | Model ID mismatch | Page URL repo: `gnani/gnani-evon-v3.3-30B-A3B`. Code snippets / citation often use `gnani/gnani-evon-v3.3`. **Decision: use the exact repository ID shown on the page you accept.** | Same |
-| Tool use / medical | Tool use still improving on model card; not for medical advice. Lala must validate every tool call and enforce no-diagnosis itself. | Same |
+| Tool use / medical | Tool use still improving on model card; not for medical advice. Clinic Dial must validate every tool call and enforce no-diagnosis itself. | Same |
 | Out of scope | Gnani Agent Builder and phone-calling products | Prompt + docs |
 
-**Proposed Lala server-only env names (never `NEXT_PUBLIC_*`):**  
+**Proposed Clinic Dial server-only env names (never `NEXT_PUBLIC_*`):**  
 `GNANI_API_KEY`, `GNANI_API_BASE_URL` (default `https://api.vachana.ai`), `GNANI_STT_MODEL` (e.g. `prisma-v3.0`), `GNANI_TTS_MODEL` (e.g. `timbre-v2.5`), `GNANI_TTS_VOICE_EN`, `GNANI_TTS_VOICE_HI`, `GNANI_TTS_VOICE_TE`, `LLM_BASE_URL`, `LLM_MODEL`, `LLM_API_KEY` (if protected).  
-`HF_TOKEN` only on the GPU host that downloads the model — never in the Lala app.
+`HF_TOKEN` only on the GPU host that downloads the model — never in the Clinic Dial app.
 
-**Language support status:** Hindi and Telugu are **documented** for both STT and TTS — **not yet tested in Lala**.
+**Language support status:** Hindi and Telugu are **documented** for both STT and TTS — **not yet tested in Clinic Dial**.
 
 **Blockers (owner = you):** (1) Gnani API key from console, (2) Hugging Face access approval for Evon, (3) GPU hosting cost/choice for Evon.
 
@@ -228,12 +228,12 @@ Lumen and Lala use **separate** Supabase projects. Lala never points at Lumen’
 
 | System | Owns | Sync |
 |---|---|---|
-| Lumen DB | Local enquiry copy, services catalog for the demo site, rate limits | Source for visitor UX; forwards to Lala after save |
-| Lala DB | Authoritative CRM: clinics, customers, enquiries, appointments, availability, integrations, activity | Authoritative for appointments |
-| Gnani Speech APIs | Ephemeral STT/TTS | No long-term PII store in Gnani for POC design; Lala stores consented transcripts |
-| Evon v3.3 (self-hosted) | Turn-taking / tool-calling brain | Served on GPU via vLLM/SGLang; Lala calls OpenAI-compatible `/v1/chat/completions`; no hosted Evon API found in Speech docs |
+| Lumen DB | Local enquiry copy, services catalog for the demo site, rate limits | Source for visitor UX; forwards to Clinic Dial after save |
+| Clinic Dial DB | Authoritative CRM: clinics, customers, enquiries, appointments, availability, integrations, activity | Authoritative for appointments |
+| Gnani Speech APIs | Ephemeral STT/TTS | No long-term PII store in Gnani for POC design; Clinic Dial stores consented transcripts |
+| Evon v3.3 (self-hosted) | Turn-taking / tool-calling brain | Served on GPU via vLLM/SGLang; Clinic Dial calls OpenAI-compatible `/v1/chat/completions`; no hosted Evon API found in Speech docs |
 
-### Proposed Lala tables (key columns)
+### Proposed Clinic Dial tables (key columns)
 
 | Table | Key columns |
 |---|---|
@@ -347,28 +347,28 @@ HMAC request signing with timestamp to limit replay.
 ## 15. Codebase audit: existing vs missing
 
 Status labels only: **Implemented** | **Partial** | **Not started** | **Blocked**.  
-Re-verified 2026-11-13 (KAN-10 / Epic 0): Lumen paths below exist; `./lala/` still contains `docs/` only (no product code).
+Living build status: `STATUS.md`. Table below is the POC audit snapshot (updated as features shipped).
 
 | Feature | Status | Evidence | Notes |
 |---|---|---|---|
-| Epic 0 planning docs | Implemented | `./lala/docs/PRD.md`, `EPICS.md`, `POC_ROADMAP.md`, `DEMO_RUNBOOK.md`, `DECISIONS.md` | Planning only; no `backend/` / `apps/` yet |
+| Epic 0 planning docs | Implemented | `./lala/docs/PRD.md`, `EPICS.md`, `STATUS.md`, `DEMO_RUNBOOK.md`, `DECISIONS.md` | Product code now exists under `backend/` / `apps/` |
 | Lumen care menu (9 services / 3 categories) | Implemented | `supabase/migrations/20261109200000_services_and_enquiries.sql` seed; `lib/types.ts` `CATEGORIES`; `lib/store.ts` `loadCatalog` | Prices in paise (see notes); grant follow-up `20261110123000_grant_enquiry_guard.sql` |
 | Lumen consultation form UI | Implemented | `components/consultation-form.tsx`; wired in `components/lumen-website.tsx` | Name, email, optional phone, category, service, consent |
 | Lumen form challenge token | Implemented | `app/api/form-token/route.ts`; `lib/enquiry.ts` `issueChallenge` / `verifyChallenge` | HMAC-signed, 30 min (`expires_in: 1800`) |
-| Lumen enquiry API route | Implemented | `app/api/consultations/route.ts` → `saveEnquiry` | Server-side Next.js route; no Lala forward yet |
+| Lumen enquiry API route | Implemented | `app/api/consultations/route.ts` → `saveEnquiry` | Server-side Next.js route; no Clinic Dial forward yet |
 | Lumen local enquiry storage | Implemented | `lib/store.ts` `saveEnquiry`; table `consultation_enquiries` | Own Supabase via `SUPABASE_DB_URL`; idempotent on `submission_id` |
 | Consent text/version persisted | Implemented | `lib/types.ts` `CONSENT_*`; insert in `lib/store.ts` | Version `lumen-ai-calls-v1` |
-| Lumen env configuration | Partial | `.env.example` names: `SUPABASE_DB_URL`, `LUMEN_FORM_SECRET`, `LUMEN_ALLOWED_ORIGINS`, `LUMEN_TRUSTED_IP_HEADER` | No Gnani / Lala forward vars; values not audited here |
-| Lumen → Lala forward | Not started | No `LALA_*` in `.env.example`; consultations route ends at `saveEnquiry` | Needs server forward + `forward_status` (Epics 2–3) |
-| Lala platform (all product code) | Partial | `./lala/backend/`, `./lala/apps/dashboard/`, `./lala/supabase/migrations/` (Epic 1) | Greenfield beyond Epic 1 still Not started |
-| Lala clinic auth + onboarding | Partial | FastAPI `/v1/me`, `/v1/clinics*`; migration `20261113220000_clinics_and_members.sql`; dashboard login/onboarding | Live Lala Supabase project not created (org free-project limit); API store in-memory until DB wired |
-| Gnani env / SDK / API calls in Lumen | Not started | No `GNANI_*` names in `.env.example`; no SDK imports in Lumen | Expected none |
-| Gnani STT/TTS + Evon in Lala | Blocked | Needs Gnani key + HF Evon access + GPU host | See `DECISIONS.md` D03–D06; Epic 6 |
-| Hindi + Telugu STT & TTS | Not started | Documented in [STT languages](https://docs.gnani.ai/api/STT/languages) and [TTS](https://docs.gnani.ai/api/TTS/tts-inference) (`hi-IN`, `te-IN`) | **Documented, not yet tested in Lala** |
-| Hosted Evon LLM endpoint | Not started | Not listed in Speech API docs index | Plan self-hosted only |
-| Appointments / availability in Lumen | Not started | `lib/enquiry.test.ts` asserts migration SQL has no `appointments` table | By design — Lala owns bookings |
-| Multi-clinic auth dashboard | Partial | `./lala/apps/dashboard/` login + onboarding + clinic name from `/v1/me` | Needs Node + Lala Supabase env to run |
-| Lala design system / visual foundation | Partial | Epic 4A: tokens + auth UX on live `AuthShell` login; CRM shell/primitives still open | Login-first; verify with `AUTH_UX_WALKTHROUGH.md` |
+| Lumen env configuration | Partial | Includes `LALA_INTEGRATION_URL` / `LALA_INTEGRATION_API_KEY` in `.env.example` | You must paste a real key for live forward |
+| Lumen → Clinic Dial forward | Implemented | `lib/lala-forward.ts` + `forward_status` migration + consultations route | Wire env for live path |
+| Clinic Dial platform (all product code) | Implemented (POC) | Epics 1–8 code paths; Epic 6 live speech deferred | In-memory API store until Supabase wired |
+| Clinic Dial clinic auth + onboarding | Implemented | FastAPI + dashboard + migration | Durable DB optional for POC demos |
+| Gnani env / SDK / API calls in Lumen | Not started | None in Lumen (by design) | Expected none |
+| Gnani STT/TTS + Evon in Clinic Dial | Blocked (live) / mock implemented | Mock pipeline + voice client shipped | See `DECISIONS.md` D03–D06 |
+| Hindi + Telugu STT & TTS | Partial | Languages selectable in voice client; live STT/TTS untested | Needs D03+ |
+| Hosted Evon LLM endpoint | Blocked | Self-host only | D06 |
+| Appointments / availability in Lumen | Not started | By design — Clinic Dial owns bookings | OK |
+| Multi-clinic auth dashboard | Implemented | Login, CRM, appointments, AI inbox, analytics | Running on `:3001` |
+| Clinic Dial design system / visual foundation | Implemented | Epic 4A tokens + CRM shell | |
 
 **Lumen services (9) and prices (INR = paise/100):**
 
@@ -384,7 +384,7 @@ Re-verified 2026-11-13 (KAN-10 / Epic 0): Lumen paths below exist; `./lala/` sti
 | Skin & Body Rituals | Chocolate Body Wrap | ₹3,900 |
 | Skin & Body Rituals | Vitamin C Facial | ₹3,400 |
 
-**How Lumen submits:** browser → `lib/api.ts` `submitConsultation` → `POST /api/consultations` → validate → `saveEnquiry` (Postgres). **No** client-direct Supabase; **no** server action. Forward to Lala belongs on this API route after local save.
+**How Lumen submits:** browser → `lib/api.ts` `submitConsultation` → `POST /api/consultations` → validate → `saveEnquiry` (Postgres). **No** client-direct Supabase; **no** server action. Forward to Clinic Dial belongs on this API route after local save.
 
 ## 16. Test verification results
 
@@ -395,7 +395,7 @@ Re-checked 2026-11-13 during KAN-10 close-out.
 | Lumen | Intended: `pnpm test` / `npm test` (`package.json` script: `next typegen && tsc --noEmit && eslint . && node --experimental-strip-types --test lib/*.test.ts`) | **not verified**: `node` / `npm` / `pnpm` still `command not found` in this environment |
 | Lumen test character | `lib/enquiry.test.ts`, `lib/store.test.ts` | Offline unit tests (validation, tokens, migration text, pooler URL rewrite); do not require live Supabase when runnable |
 | Lumen path spot-check | File existence for routes, form, store, migrations, `.env.example` | **pass** (read-only) |
-| Lala | `cd ./lala/backend && ../.venv/bin/pytest app/tests/test_auth_isolation.py -q` | **pass** (10 tests: JWT, membership, dual-clinic isolation, TZ default) |
+| Clinic Dial | `cd ./lala/backend && ../.venv/bin/pytest app/tests/test_auth_isolation.py -q` | **pass** (10 tests: JWT, membership, dual-clinic isolation, TZ default) |
 
 ## 17. Risks, dependencies and blockers
 
@@ -414,4 +414,4 @@ Re-checked 2026-11-13 during KAN-10 close-out.
 
 ## 18. Definition of POC completion
 
-POC is complete when Milestones A–D acceptance gates in `POC_ROADMAP.md` pass: live Lumen→Lala enquiry path, owner appointment management from DB, tenant isolation with two clinics, and either working voice tools or an explicit deferred-C note with A+B still demoable. No fabricated dashboard data.
+POC is complete when Milestones A–D gates in `STATUS.md` and `DEMO_RUNBOOK.md` pass: live Lumen→Clinic Dial enquiry path, owner appointment management from DB, tenant isolation with two clinics, and either working voice tools or an explicit deferred-C note with A+B still demoable. No fabricated dashboard data.

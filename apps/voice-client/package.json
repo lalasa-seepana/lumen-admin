@@ -1,0 +1,10 @@
+{
+  "name": "lala-voice-client",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Visitor receptionist UI. Mic and text go only to the Clinic Dial API for one clinic.",
+  "scripts": {
+    "dev": "python3 -m http.server 3002 --bind 127.0.0.1",
+    "start": "python3 -m http.server 3002 --bind 127.0.0.1"
+  }
+}

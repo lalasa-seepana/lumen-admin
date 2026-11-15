@@ -1,28 +1,33 @@
 import type { Metadata } from "next";
-import { Fraunces, Outfit } from "next/font/google";
+import { EB_Garamond, Figtree } from "next/font/google";
+import { AuthProvider } from "@/lib/auth-context";
 import "./globals.css";
 
-const display = Fraunces({
+const display = EB_Garamond({
   subsets: ["latin"],
   variable: "--font-display",
   display: "swap",
+  style: ["normal", "italic"],
 });
 
-const body = Outfit({
+const body = Figtree({
   subsets: ["latin"],
   variable: "--font-body",
   display: "swap",
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
-  title: "Lala",
-  description: "Clinic operations dashboard",
+  title: "Clinic Dial",
+  description: "Clinic workspace for appointments, enquiries, and your AI receptionist",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${display.variable} ${body.variable}`}>
-      <body>{children}</body>
+      <body>
+        <AuthProvider>{children}</AuthProvider>
+      </body>
     </html>
   );
 }

@@ -1,4 +1,4 @@
--- Lala clinic tenancy. Additive. Separate Supabase project from Lumen.
+-- Clinic Dial clinic tenancy. Additive. Separate Supabase project from Lumen.
 -- Owners sign up via Supabase Auth; membership is the isolation boundary.
 
 create extension if not exists "pgcrypto";

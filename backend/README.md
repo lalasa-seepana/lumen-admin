@@ -1,6 +1,6 @@
-# Lala API (Epic 1)
+# Clinic Dial API (Epics 1–4, 6)
 
-FastAPI backend for clinic auth context and onboarding.
+FastAPI backend for clinic auth, website ingest, CRM lists, and AI receptionist tools/voice.
 
 ## Setup
 
@@ -10,28 +10,26 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env
-# Set SUPABASE_JWT_SECRET from a Lala Supabase project (not Lumen).
 uvicorn app.main:app --reload --port 8000
 ```
 
-## Endpoints
+Optional live speech: `pip install gnani-vachana` and set `GNANI_API_KEY` + `LLM_BASE_URL`.
+
+## Voice (Epic 6)
 
 | Method | Path | Auth | Notes |
 |---|---|---|---|
-| `GET` | `/healthz` | no | Liveness |
-| `GET` | `/v1/me` | Bearer JWT | User + optional clinic |
-| `POST` | `/v1/clinics` | Bearer JWT | Create clinic (role `owner`, TZ default `Asia/Kolkata`) |
-| `GET` | `/v1/clinics/current` | Bearer JWT | Requires membership |
-| `GET` | `/v1/clinics/{id}` | Bearer JWT | Same-clinic only |
+| `GET` | `/v1/voice/status` | no | Blockers + config flags |
+| `POST` | `/v1/voice/sessions` | Bearer JWT | Mint clinic voice session |
+| `WS` | `/v1/voice/ws/{session_id}` | session id | Mic/mock audio → STT → Evon tools → TTS |
+| `GET` | `/v1/voice/handovers` | Bearer JWT | Escalations for this clinic |
 
-Signup/login happen in the dashboard via Supabase Auth. This API only verifies JWTs.
+Approved tools only: `list_services`, `check_availability`, `create_appointment`, `reschedule_appointment`, `escalate`.
 
 ## Tests
 
 ```sh
-cd backend
-source .venv/bin/activate
-pytest app/tests/test_auth_isolation.py -q
+pytest app/tests/ -q --ignore=app/tests/test_gnani_evon_live.py
+# Live smoke (never default CI):
+# LALA_LIVE_VOICE=1 GNANI_API_KEY=… LLM_BASE_URL=… pytest app/tests/test_gnani_evon_live.py -q -m live
 ```
-
-Isolation tests use an in-memory store. Apply `../supabase/migrations/20261113220000_clinics_and_members.sql` to a dedicated Lala Supabase project when wiring a live DB.

@@ -1,6 +1,6 @@
-# Lala dashboard (Epic 1 + 4A auth UX)
+# Clinic Dial dashboard (Epics 1–4)
 
-Minimal Next.js app for clinic owner signup/login and onboarding.
+Next.js app for clinic owner auth, website integration keys, and Milestone A CRM modules.
 
 ## Design tokens (Epic 4A)
 
@@ -23,7 +23,7 @@ Auth UX ships on the live login page first; CRM shell primitives follow in Epic 
 
 Sign-in includes **Forgot password?** → Supabase emails a recovery link back to `http://localhost:3001/`.
 
-In the Lala Supabase project → **Authentication → URL configuration**:
+In the Clinic Dial Supabase project → **Authentication → URL configuration**:
 
 1. Site URL: `http://localhost:3001`
 2. Redirect URLs: include `http://localhost:3001` and `http://localhost:3001/**`
@@ -32,8 +32,8 @@ Without those, the reset email may link to the wrong host.
 
 ## Setup
 
-1. Create a **Lala** Supabase project (separate from Lumen).
-2. Apply `../../supabase/migrations/20261113220000_clinics_and_members.sql`.
+1. Create a **Clinic Dial** Supabase project (separate from Lumen).
+2. Apply migrations under `../../supabase/migrations/` (clinics + website integrations).
 3. Copy env:
 
 ```sh
@@ -49,4 +49,4 @@ pnpm install
 pnpm dev
 ```
 
-Open http://localhost:3001 — after login + clinic create, the clinic name comes from `GET /v1/me`.
+Open http://localhost:3001 — after login + clinic create, use Overview / Consultations / Customers / Website integrations / Activity. Appointments, AI, and Analytics show planned empty states (no fake data).

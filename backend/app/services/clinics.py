@@ -16,6 +16,7 @@ def _clinic_out(clinic) -> ClinicOut:
         name=clinic.name,
         timezone=clinic.timezone,
         created_at=clinic.created_at,
+        public_slug=getattr(clinic, "public_slug", "") or "",
     )
 
 

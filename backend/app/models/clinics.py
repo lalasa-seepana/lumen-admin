@@ -25,6 +25,7 @@ class ClinicOut(BaseModel):
     name: str
     timezone: str
     created_at: datetime
+    public_slug: str = ""
 
 
 class MembershipOut(BaseModel):

@@ -1,0 +1,236 @@
+:root {
+  --bg: rgba(18, 18, 22, 0.78);
+  --stroke: rgba(255, 255, 255, 0.12);
+  --text: #f4f1ea;
+  --muted: rgba(244, 241, 234, 0.62);
+  --accent: #c9b8ff;
+  --accent-2: #7ee0c3;
+  --danger: #ff8f8f;
+  --font: "SF Pro Display", "Avenir Next", "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+  font-family: var(--font);
+  color: var(--text);
+  -webkit-app-region: drag;
+  user-select: none;
+}
+
+.bar {
+  position: relative;
+  width: calc(100% - 16px);
+  margin: 8px;
+  height: calc(100% - 16px);
+  border-radius: 22px;
+  background: var(--bg);
+  border: 1px solid var(--stroke);
+  backdrop-filter: blur(28px) saturate(1.4);
+  -webkit-backdrop-filter: blur(28px) saturate(1.4);
+  overflow: hidden;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  transition: border-color 180ms ease, transform 180ms ease;
+}
+
+.bar.listening {
+  border-color: rgba(126, 224, 195, 0.45);
+}
+
+.bar.transcribing,
+.bar.polishing {
+  border-color: rgba(201, 184, 255, 0.45);
+}
+
+.bar.error {
+  border-color: rgba(255, 143, 143, 0.55);
+}
+
+.glow {
+  position: absolute;
+  inset: -40% -20% auto;
+  height: 120%;
+  background: radial-gradient(
+    closest-side,
+    rgba(126, 224, 195, 0.18),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 220ms ease;
+  pointer-events: none;
+}
+
+.bar.listening .glow {
+  opacity: 1;
+  animation: drift 2.4s ease-in-out infinite alternate;
+}
+
+@keyframes drift {
+  from {
+    transform: translateX(-8%);
+  }
+  to {
+    transform: translateX(8%);
+  }
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 12px;
+  height: 100%;
+  padding: 0 16px 0 14px;
+}
+
+.orb {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+}
+
+.orb .core {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, var(--accent-2), var(--accent));
+  box-shadow: 0 0 16px rgba(126, 224, 195, 0.55);
+}
+
+.orb .ring {
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(126, 224, 195, 0.35);
+  opacity: 0;
+}
+
+.bar.listening .ring {
+  opacity: 1;
+  animation: pulse 1.2s ease-out infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+
+.meta {
+  min-width: 0;
+}
+
+.brand {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.status {
+  margin-top: 2px;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+kbd {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 11px;
+  font-family: inherit;
+}
+
+.wave {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 28px;
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+
+.bar.listening .wave {
+  opacity: 1;
+}
+
+.wave i {
+  display: block;
+  width: 3px;
+  height: 8px;
+  border-radius: 99px;
+  background: var(--accent-2);
+  animation: bars 0.9s ease-in-out infinite;
+}
+
+.wave i:nth-child(2) {
+  animation-delay: 0.08s;
+}
+.wave i:nth-child(3) {
+  animation-delay: 0.16s;
+}
+.wave i:nth-child(4) {
+  animation-delay: 0.24s;
+}
+.wave i:nth-child(5) {
+  animation-delay: 0.12s;
+}
+.wave i:nth-child(6) {
+  animation-delay: 0.2s;
+}
+.wave i:nth-child(7) {
+  animation-delay: 0.04s;
+}
+
+@keyframes bars {
+  0%,
+  100% {
+    height: 6px;
+    opacity: 0.45;
+  }
+  50% {
+    height: 22px;
+    opacity: 1;
+  }
+}
+
+.level {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  padding: 5px 9px;
+  -webkit-app-region: no-drag;
+  cursor: pointer;
+}
+
+.level:hover {
+  color: var(--text);
+  border-color: rgba(255, 255, 255, 0.28);
+}

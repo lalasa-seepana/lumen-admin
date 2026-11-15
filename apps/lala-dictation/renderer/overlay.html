@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self' blob:; script-src 'self'; style-src 'self' 'unsafe-inline'; media-src 'self' blob:;"
+    />
+    <title>Lala Dictation</title>
+    <link rel="stylesheet" href="./overlay.css" />
+  </head>
+  <body>
+    <div id="bar" class="bar idle" data-state="idle">
+      <div class="glow"></div>
+      <div class="inner">
+        <div class="orb" aria-hidden="true">
+          <span class="ring"></span>
+          <span class="core"></span>
+        </div>
+        <div class="meta">
+          <div class="brand">Lala</div>
+          <div id="status" class="status">Hold <kbd>fn</kbd> to speak</div>
+        </div>
+        <div id="wave" class="wave" aria-hidden="true">
+          <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        </div>
+        <div id="level" class="level">Light</div>
+      </div>
+    </div>
+    <script src="./overlay.js"></script>
+  </body>
+</html>

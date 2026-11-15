@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Clinic receptionist</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&family=Figtree:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="visitor-shell">
+      <article class="visitor-card">
+        <header class="visitor-header">
+          <div class="heading-row"><p class="visitor-brand">Clinic Dial<span> / Rhea</span></p><p id="modeBadge" class="status-pill" hidden>Demo mode</p></div>
+          <h1 id="clinicName">Clinic receptionist</h1>
+          <p id="aiDisclosure" class="lede">You are chatting with Rhea, an AI receptionist, not a clinician. Ask about services, bookings, or availability.</p>
+        </header>
+        <div class="receptionist-layout">
+          <div class="conversation-column">
+            <section class="stage" id="stage" aria-label="Receptionist conversation" data-mode="idle">
+              <div class="voice-status"><span class="status-dot" aria-hidden="true"></span><span id="voiceStatus">Ready to start</span></div>
+              <div class="voice-visual" aria-hidden="true"><div class="wave">
+                <span style="--bar-height: 8px; --delay: -0.00s"></span>
+                <span style="--bar-height: 12px; --delay: -0.13s"></span>
+                <span style="--bar-height: 18px; --delay: -0.26s"></span>
+                <span style="--bar-height: 28px; --delay: -0.39s"></span>
+                <span style="--bar-height: 20px; --delay: -0.52s"></span>
+                <span style="--bar-height: 38px; --delay: -0.65s"></span>
+                <span style="--bar-height: 52px; --delay: -0.78s"></span>
+                <span style="--bar-height: 36px; --delay: -0.00s"></span>
+                <span style="--bar-height: 62px; --delay: -0.13s"></span>
+                <span style="--bar-height: 46px; --delay: -0.26s"></span>
+                <span style="--bar-height: 76px; --delay: -0.39s"></span>
+                <span style="--bar-height: 58px; --delay: -0.52s"></span>
+                <span style="--bar-height: 90px; --delay: -0.65s"></span>
+                <span style="--bar-height: 64px; --delay: -0.78s"></span>
+                <span style="--bar-height: 100px; --delay: -0.00s"></span>
+                <span style="--bar-height: 72px; --delay: -0.13s"></span>
+                <span style="--bar-height: 86px; --delay: -0.26s"></span>
+                <span style="--bar-height: 58px; --delay: -0.39s"></span>
+                <span style="--bar-height: 98px; --delay: -0.52s"></span>
+                <span style="--bar-height: 68px; --delay: -0.65s"></span>
+                <span style="--bar-height: 88px; --delay: -0.78s"></span>
+                <span style="--bar-height: 54px; --delay: -0.00s"></span>
+                <span style="--bar-height: 78px; --delay: -0.13s"></span>
+                <span style="--bar-height: 60px; --delay: -0.26s"></span>
+                <span style="--bar-height: 42px; --delay: -0.39s"></span>
+                <span style="--bar-height: 64px; --delay: -0.52s"></span>
+                <span style="--bar-height: 40px; --delay: -0.65s"></span>
+                <span style="--bar-height: 52px; --delay: -0.78s"></span>
+                <span style="--bar-height: 32px; --delay: -0.00s"></span>
+                <span style="--bar-height: 42px; --delay: -0.13s"></span>
+                <span style="--bar-height: 24px; --delay: -0.26s"></span>
+                <span style="--bar-height: 32px; --delay: -0.39s"></span>
+                <span style="--bar-height: 18px; --delay: -0.52s"></span>
+                <span style="--bar-height: 12px; --delay: -0.65s"></span>
+                <span style="--bar-height: 8px; --delay: -0.78s"></span>
+              </div></div>
+              <h2 id="stateBanner" class="visitor-state" aria-live="polite">How can we help?</h2>
+              <p id="stageCaption" class="stage-caption" aria-live="polite">Ask about services, find a time, or book an appointment.</p>
+              <div class="call-controls" data-active="false" aria-label="Conversation controls">
+                <button id="mute" type="button" class="call-button" disabled aria-pressed="false" aria-label="Mute receptionist"><span class="control-disc"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 4-6 5H2v6h3l6 5zM15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/></svg></span><span id="muteLabel">Sound on</span></button>
+                <div class="primary-control">
+                  <button id="start" type="button" class="call-button primary-call"><span class="control-disc"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3m-4 0h8"/></svg></span><span id="startLabel">Start conversation</span></button>
+                  <button id="talk" type="button" class="call-button primary-call" aria-pressed="false" aria-describedby="voiceHelp" disabled hidden><span class="control-disc"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3m-4 0h8"/></svg></span><span id="talkLabel">Tap to talk</span></button>
+                </div>
+                <button id="stop" type="button" class="call-button end-call" disabled aria-label="End conversation"><span class="control-disc"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 14v-4c5-5 13-5 18 0v4l-5-1v-3a13 13 0 0 0-8 0v3z"/></svg></span><span>End</span></button>
+              </div>
+              <p id="voiceHelp" class="voice-help">Use your voice or type. You choose when the mic is on.</p>
+              <div class="quick-actions" aria-label="Suggested messages">
+                <button type="button" data-prompt="I would like to book an appointment."><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 2v6m10-6v6M3 11h18"/></svg>Book an appointment</button>
+                <button type="button" data-prompt="What services do you offer?"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 3 6 6 3-6 3-3 6-3-6-6-3 6-3zM20 2v4m-2-2h4"/></svg>Explore services</button>
+                <button type="button" data-prompt="What appointment times are available?"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Check availability</button>
+              </div>
+            </section>
+            <p id="error" class="error" role="alert" hidden></p>
+            <section class="message-panel" aria-label="Text conversation">
+              <label for="textInput">Prefer to type?</label>
+              <div class="message-compose"><textarea id="textInput" rows="2" placeholder="Ask your receptionist a question…"></textarea><button id="sendText" type="button" disabled aria-label="Send message"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 3 18 9-18 9 4-9zM7 12h14"/></svg><span>Send</span></button></div>
+              <p id="messageHint" class="meta" aria-live="polite">Start a conversation to send a message.</p>
+            </section>
+            <details class="transcript panel" id="transcriptPanel">
+              <summary>Conversation history</summary>
+              <ul id="turns" class="turns" aria-live="polite" aria-label="Conversation"></ul>
+            </details>
+          </div>
+          <aside class="settings-column" aria-label="Voice settings and privacy">
+            <section class="settings-panel panel" aria-labelledby="settingsTitle">
+              <h2 id="settingsTitle"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 3-1 3-3 1-2 4 2 3v3l4 3 3-1 3 1 4-3v-3l2-3-2-4-3-1-1-3z"/><circle cx="12" cy="12" r="3"/></svg>Voice &amp; device settings</h2>
+              <div class="device-grid">
+                <label>Microphone<span class="select-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3m-4 0h8"/></svg><select id="micSelect" disabled><option value="">Default microphone</option></select></span></label>
+                <label>Speaker<span class="select-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m11 4-6 5H2v6h3l6 5zM15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/></svg><select id="speakerSelect" disabled><option value="">Default speaker</option></select></span></label>
+              </div>
+              <div class="device-actions"><button id="refreshDevices" type="button" class="secondary"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5M5 7a8 8 0 0 1 13-2l2 3M4 16l2 3a8 8 0 0 0 13-2"/></svg>Refresh devices</button><button id="testSpeaker" type="button" class="secondary"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 4 12 8-12 8z"/></svg>Test speaker</button></div>
+              <label>Language<span class="select-wrap"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 9h18M3 15h18"/></svg><select id="language"><option value="en-IN">English (India)</option><option value="hi-IN">Hindi</option><option value="te-IN">Telugu</option></select></span></label>
+              <label class="check"><input id="consent" type="checkbox"/><span>I agree to save this conversation’s audio recording and transcript.</span></label>
+            </section>
+            <section class="privacy-panel panel" aria-labelledby="privacyTitle">
+              <h2 id="privacyTitle"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 8 3v6c0 5-4 8-8 11-4-3-8-6-8-11V5z"/></svg>Privacy &amp; safety</h2>
+              <ul><li><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>Audio and transcripts are saved only with your consent.</span></li><li><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>Your messages go to this clinic’s receptionist.</span></li><li><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span>This is an AI receptionist, not a clinician.</span></li></ul>
+            </section>
+          </aside>
+        </div>
+      </article>
+    </main>
+    <script src="./config.js"></script>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

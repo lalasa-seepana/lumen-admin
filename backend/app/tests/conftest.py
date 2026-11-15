@@ -14,6 +14,7 @@ from app.services.clinic_store import InMemoryClinicStore, reset_clinic_store
 from app.api.deps import get_store
 
 JWT_SECRET = "test-jwt-secret-for-lala-epic1-isolation"
+INTEGRATION_PEPPER = "test-integration-pepper-for-lala-epic2"
 
 
 @pytest.fixture()
@@ -23,6 +24,11 @@ def settings() -> Settings:
         SUPABASE_URL="https://example.supabase.co",
         LALA_CORS_ORIGINS="http://localhost:3001",
         LALA_DEFAULT_TIMEZONE="Asia/Kolkata",
+        LALA_INTEGRATION_KEY_PEPPER=INTEGRATION_PEPPER,
+        LALA_VOICE_RETENTION_DAYS=90,
+        # Keep voice status tests deterministic even if developer .env has live keys.
+        GNANI_API_KEY="",
+        LLM_BASE_URL="",
     )
 
 
@@ -69,3 +75,16 @@ def owner_a_id() -> UUID:
 @pytest.fixture()
 def owner_b_id() -> UUID:
     return uuid4()
+
+
+def add_weekday_window(client, token, *, weekday: int = 0, start: int = 9 * 60, end: int = 18 * 60):
+    """Add a default Monday 09:00–18:00 clinic-local availability window."""
+    from app.tests.test_integration_ingest import auth_headers
+
+    response = client.post(
+        "/v1/availability",
+        headers=auth_headers(token),
+        json={"weekday": weekday, "start_minute": start, "end_minute": end},
+    )
+    assert response.status_code == 201
+    return response.json()

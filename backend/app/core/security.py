@@ -53,7 +53,7 @@ def _decode_claims(token: str, settings: Settings) -> Dict[str, Any]:
                     status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
                     detail={
                         "code": "auth_unavailable",
-                        "message": "Set SUPABASE_URL so Lala can verify ES256/RS256 session tokens via JWKS",
+                        "message": "Set SUPABASE_URL so Clinic Dial can verify ES256/RS256 session tokens via JWKS",
                     },
                 )
             key = _jwks_client(supabase_url).get_signing_key_from_jwt(token).key

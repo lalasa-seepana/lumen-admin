@@ -1,0 +1,22 @@
+{
+  "name": "lala-dictation",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local dictation: hold FN → transcribe → polish → paste",
+  "main": "electron/main.mjs",
+  "type": "module",
+  "scripts": {
+    "build:fn": "swiftc -O electron/fn-watcher.swift -o electron/fn-watcher",
+    "postinstall": "npm run build:fn || true",
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "test:polish": "node scripts/test-polish.mjs"
+  },
+  "dependencies": {
+    "@xenova/transformers": "^2.17.2",
+    "electron-store": "^10.0.1"
+  },
+  "devDependencies": {
+    "electron": "^33.2.1"
+  }
+}

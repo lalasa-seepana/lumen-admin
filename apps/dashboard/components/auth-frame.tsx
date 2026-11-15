@@ -1,26 +1,18 @@
 import type { ReactNode } from "react";
-import { BrandAd } from "@/components/brand-ad";
 
 type AuthFrameProps = {
   children: ReactNode;
   lede: string;
-  brandHeadline?: string;
-  brandSupport?: string;
   busy?: boolean;
 };
 
-export function AuthFrame({
-  children,
-  lede,
-  brandHeadline,
-  brandSupport,
-  busy,
-}: AuthFrameProps) {
+export function AuthFrame({ children, lede, busy }: AuthFrameProps) {
   return (
     <main className="auth-layout" aria-busy={busy || undefined}>
-      <BrandAd headline={brandHeadline} support={brandSupport} />
-      <div className="auth-column">
-        <h1 className="brand auth-column-brand">Lala</h1>
+      <div className="auth-card">
+        <h1 className="auth-brand">
+          Clinic Dial<em>.</em>
+        </h1>
         <p className="lede">{lede}</p>
         {children}
       </div>

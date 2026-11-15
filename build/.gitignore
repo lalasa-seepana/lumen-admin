@@ -1,0 +1,5 @@
+apps/
+.env
+*.pem
+*.key
+.DS_Store

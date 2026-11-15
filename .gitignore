@@ -6,8 +6,15 @@ __pycache__/
 .env
 .env.*
 !.env.example
-apps/dashboard/node_modules/
+node_modules/
+.pnpm-store/
 apps/dashboard/.next/
+*.tsbuildinfo
 *.egg-info/
 .DS_Store
 next-env.d.ts
+build/apps/
+build/.env
+build/env/*.env
+!build/env/*.env.example
+build/*.tar.gz

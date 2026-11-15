@@ -1,0 +1,4 @@
+node_modules/
+electron/fn-watcher
+.DS_Store
+*.log
